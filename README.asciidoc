@@ -1,0 +1,61 @@
+== Nagios Plugin FusionReactor ==
+
+This project provides a Nagios plugin for FusionReactor resource monitoring. The plugin uses HTTP-Rest based API
+
+
+=== Requirements: ===
+* Nagios
+* Python 2.6 onwards (with +requests+ module used for digest authentication)
+* FusionReactor
+
+=== Usage: ===
+
+The check script supports following options. Details about monitoring different resources is available in respective sub-sections.
+
+[source,python]
+----
+$ ./check_fusionreactor.py --help
+Usage: check_fusionreactor.py [options]
+
+This Nagios plugin checks parameters collected by FusionReactor.
+
+Options:
+  -h, --help            show this help message and exit
+  -H HOST, --host=HOST  The hostname you want to connect to
+  -P PORT, --port=PORT  The port FusionReactor console is runnung on
+  -s SUBDIR, --subdir=SUBDIR
+                        The path of the FusionReactor API
+  -u USER, --user=USER  The username you want to login as
+  -p PASSWD, --pass=PASSWD
+                        The password you want to use for that user
+  -W WARNING, --warning=WARNING
+                        The warning threshold we want to set
+  -C CRITICAL, --critical=CRITICAL
+                        The critical threshold we want to set
+  -D, --perf_data       return performance data
+  -f FIELD, --field=FIELD
+                        The field you want to query
+
+----
+
+Currently the plugin supports the following fields:
+
+- SerializedMetrics/CurrentRequestCount
+- SerializedMetrics/RecentRequestMeanRuntimeMillis
+- SerializedMetrics/TotalRequestCount
+- SerializedMetrics/AverageRequestTimeMillis
+
+
+- SerializedMetrics/MemoryProbe/Free
+- SerializedMetrics/MemoryProbe/Max
+- SerializedMetrics/MemoryProbe/Total
+
+- SerializedMetrics/CPUProbe/Usage
+- SerializedMetrics/CPUProbe/SystemUsage
+
+- SerializedMetrics/JDBC/JDBCDriver/JDBCLoad
+
+
+=== Licensing and Copyright: ===
+
+The project is licensed under the http://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0]
