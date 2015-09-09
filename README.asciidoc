@@ -43,7 +43,7 @@ Currently the plugin supports the following fields:
 - SerializedMetrics/CurrentRequestCount
 - SerializedMetrics/RecentRequestMeanRuntimeMillis
 - SerializedMetrics/TotalRequestCount
-- SerializedMetrics/AverageRequestTimeMillis
+- SerializedMetrics/RequestPerformance/AverageRequestTimeMillis
 
 
 - SerializedMetrics/MemoryProbe/Free
