@@ -1,6 +1,6 @@
 == Nagios Plugin FusionReactor ==
 
-This project provides a Nagios plugin for FusionReactor resource monitoring. The plugin uses HTTP-Rest based API
+This project provides a Nagios plugin for http://www.fusion-reactor.com/[FusionReactor] resource monitoring. The plugin uses HTTP-Rest based API
 
 
 === Requirements: ===
