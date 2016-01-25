@@ -66,9 +66,9 @@ def performance_data(perf_data, params):
                 warning = warning or 0
                 critical = critical or 0
                 data += ";%s;%s" % (warning, critical)
-                
+
             data += " "
-            
+
     return data
 
 
@@ -76,7 +76,7 @@ def numeric_type(param):
     """
     Checks parameter type
     True for float; int or null data; false otherwise
-    
+
     :param param: input param to check
     """
     if ((type(param) == float or type(param) == int or param == None)):
@@ -87,7 +87,7 @@ def numeric_type(param):
 def check_levels(param, warning, critical, message, ok=[]):
     """
     Checks error level
-    
+
     :param param: input param
     :param warning: watermark for warning
     :param critical: watermark for critical
@@ -127,7 +127,7 @@ def check_levels(param, warning, critical, message, ok=[]):
 def base_url(host, port, path):
     """
     Provides base URL for HTTP Management API
-    
+
     :param host: FR hostname
     :param port: FR HTTP Management Port
     :param path: FR Path
@@ -156,7 +156,7 @@ def sub_char(character):
         'F': 'S',
     }
     return char_map[character]
-    
+
 def get_stats_xml(conninfo):
     """
     HTTP GET with Basic Authentication. Returns XML result.
@@ -166,11 +166,11 @@ def get_stats_xml(conninfo):
     try:
         hash = hashlib.md5()
         hash.update(conninfo['password'])
-        
+
         password_hash = hash.hexdigest().upper()
-        password_hash_subbed = ''.join([sub_char(character) for character in password_hash])    
-        
-        
+        password_hash_subbed = ''.join([sub_char(character) for character in password_hash])
+
+
         url = base_url(conninfo['host'], conninfo['port'], conninfo['subdir'])
 
         headers = {'content-type': 'text/plain'}
@@ -186,7 +186,7 @@ def get_stats_xml(conninfo):
         sys.exit(2)
 
 def main(argv):
-    
+
     p = optparse.OptionParser(conflict_handler="resolve", description="This Nagios plugin checks parameters collected by FusionReactor.")
 
     p.add_option('-H', '--host', action='store', type='string', dest='host', default='127.0.0.1', help='The hostname you want to connect to')
@@ -215,7 +215,7 @@ def main(argv):
 
 def exit_with_general_warning(e):
     """
-    
+
     :param e: exception
     """
     if isinstance(e, SystemExit):
@@ -225,7 +225,7 @@ def exit_with_general_warning(e):
         sys.exit(1)
     else:
         print "WARNING - General FR Warning:", e
-    return 1
+        sys.exit(1)
 
 
 def exit_with_general_critical(e):
@@ -236,15 +236,15 @@ def exit_with_general_critical(e):
         sys.exit(2)
     else:
         print "CRITICAL - General FR Error:", e
-    return 2
-
+        sys.exit(2)
 
 def get_field_data(conninfo, field_path):
 
     try:
         res = get_stats_xml(conninfo)
-        doc = ElementTree.fromstring(res) 
-        
+
+        doc = ElementTree.fromstring(res)
+
         return doc.find(field_path).text
     except Exception, e:
         return exit_with_general_critical(e)
@@ -252,13 +252,13 @@ def get_field_data(conninfo, field_path):
 def check_field(field, conninfo, warning, critical, perf_data):
     warning = warning or 1
     critical = critical or 5
-    
+
     try:
         field_value = get_field_data(conninfo, field)
 
         message = "%s: %s" % (field, field_value)
         message += performance_data(perf_data, [(field_value, field, warning, critical)])
-    
+
         return check_levels(field_value, warning, critical, message)
     except Exception, e:
         return exit_with_general_critical(e)
